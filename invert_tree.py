@@ -1,7 +1,6 @@
 # Python program to demonstrate
 # insert operation in binary search tree
 from collections import deque
-import copy
 
 
 class Node:
