@@ -1,3 +1,8 @@
+from collections import defaultdict
+import random
+import string
+
+
 class Codec:
     def __init__(self):
         self.encode_map = {}
@@ -20,3 +25,32 @@ class Codec:
 codec = Codec()
 url = "https://leetcode.com/problems/design-tinyurl"
 assert url == codec.decode(codec.encode(url))
+
+
+# alt version
+
+
+class Codec2:
+    codeDB, urlDB = defaultdict(), defaultdict()
+    chars = string.ascii_letters + string.digits
+
+    def getCode(self) -> str:
+        code = "".join(random.choice(self.chars) for i in range(6))
+        return "http://tinyurl.com/" + code
+
+    def encode(self, longUrl: str) -> str:
+        if longUrl in self.urlDB:
+            return self.urlDB[longUrl]
+        code = self.getCode()
+        while code in self.codeDB:
+            code = self.getCode()
+        self.codeDB[code] = longUrl
+        self.urlDB[longUrl] = code
+        return code
+
+    def decode(self, shortUrl: str) -> str:
+        return self.codeDB[shortUrl]
+
+
+codec2 = Codec2()
+print(codec2.encode("youtube.com"))
